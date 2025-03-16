@@ -1,11 +1,11 @@
 <h1>Listado de productos por página</h1>
 
 {{#if info.hasPrevPage}}
-    <a href="/products?page={{info.prevPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Previous Page</a>
+    <a href="/?page={{info.prevPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Previous Page</a>
 {{/if}}
 <p>Page {{info.page}} of {{info.totalPages}}</p>
 {{#if info.hasNextPage}}
-    <a href="/products?page={{info.nextPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Next Page</a>
+    <a href="/?page={{info.nextPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Next Page</a>
 {{/if}}
 
 <h2>Listado de {{info.totalDocs}} productos que vamos viendo de a {{info.limit}} productos por página de un total de {{info.totalPages}} páginas.</h2>
@@ -18,3 +18,36 @@
         <p>Category: {{this.category}}</p>
     </div>
 {{/each}}
+
+<h2>Crear Producto</h2>
+<form action="/api/products" method="post" style="background-color:#222; padding:10px; border-radius:5px; color:#fff;">
+    <input type="text" name="title" placeholder="Título" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="text" name="description" placeholder="Descripción" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="number" name="price" placeholder="Precio" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="text" name="code" placeholder="Código" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="number" name="stock" placeholder="Stock" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="text" name="category" placeholder="Categoría" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <button type="submit" style="background-color:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:3px;">Crear Producto</button>
+</form>
+
+<h2>Actualizar Producto</h2>
+<form action="/api/products/:pid" method="put" style="background-color:#222; padding:10px; border-radius:5px; color:#fff;">
+    <input type="text" name="pid" placeholder="ID del Producto a Actualizar" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="text" name="title" placeholder="Título" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="text" name="description" placeholder="Descripción" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="number" name="price" placeholder="Precio" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="text" name="code" placeholder="Código" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="number" name="stock" placeholder="Stock" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <input type="text" name="category" placeholder="Categoría" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <button type="submit" style="background-color:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:3px;">Actualizar Producto</button>
+</form>
+
+<h2>Eliminar Producto</h2>
+<form action="/api/products/:pid" method="delete" style="background-color:#222; padding:10px; border-radius:5px; color:#fff;">
+    <input type="text" name="pid" placeholder="ID del Producto a Eliminar" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
+    <button type="submit" style="background-color:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:3px;">Eliminar Producto</button>
+</form>
+
+<h2>Aggregar Productos</h2>
+<button onclick="fetch('/aggregateProducts')" style="background-color:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:3px;">Aggregar Productos</button>
+<div id="aggregationResults"></div>
