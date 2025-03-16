@@ -60,24 +60,22 @@ router.get('/', async (req, res) => {
         prevLink: prevLink,
         nextLink: nextLink
     };
-
-    res.json(response);
+res.render('index', { info: response });
 })
 
 router.get('/carts/:cid', async (req, res) => {
-    try {
-        const cartId = req.params.cid;
-        const cart = await Cart.findById(cartId).populate('products').lean();
+try {
+    const cartId = req.params.cid;
+    const cart = await Cart.findById(cartId).populate('products').lean();
 
-        if (!cart) {
-            return res.status(404).json({ error: 'Cart not found' });
-        }
+    if (!cart) {
+        return res.status(404).json({ error: 'Cart not found' });
+    }
 
-        res.render('cart', { cart: cart });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+    res.render('cart', { cart: cart });
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
 export default router;
