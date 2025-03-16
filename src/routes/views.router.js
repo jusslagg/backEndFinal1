@@ -43,6 +43,10 @@ router.get('/', async (req, res) => {
         }
     );
 
+    console.log('Filter:', filter);
+    console.log('Sort Options:', sortOptions);
+    console.log('infoPaginate:', infoPaginate);
+
     const { docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage } = infoPaginate;
 
     const prevLink = hasPrevPage ? `/products?limit=${elementosPorPagina}&page=${prevPage}&sort=${sortBy}&query=${searchQuery}&type=${searchType}` : null;
@@ -60,7 +64,8 @@ router.get('/', async (req, res) => {
         prevLink: prevLink,
         nextLink: nextLink
     };
-res.render('index', { info: response });
+    console.log('Product data:', response);
+    res.render('index', { info: response });
 })
 
 router.get('/carts/:cid', async (req, res) => {
