@@ -1,17 +1,20 @@
-<h1>Listado de usuarios por página</h1>
+<h1>Listado de productos por página</h1>
 
 {{#if info.hasPrevPage}}
-    <p>Link a página previa: {{info.prevPage}}</p>
+    <a href="/products?page={{info.prevPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Previous Page</a>
 {{/if}}
-<p>Info página actual: {{info.page}}</p>
+<p>Page {{info.page}} of {{info.totalPages}}</p>
 {{#if info.hasNextPage}}
-    <p>Link a página siguiente: {{info.nextPage}}</p>
+    <a href="/products?page={{info.nextPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Next Page</a>
 {{/if}}
 
-<h2>Listado de {{info.totalDocs}} productos que vamos viendo de a {{info.limit}} usuarios por página de un total de {{info.totalPages}} páginas.</h2>
+<h2>Listado de {{info.totalDocs}} productos que vamos viendo de a {{info.limit}} productos por página de un total de {{info.totalPages}} páginas.</h2>
 
 {{#each info.docs}}
     <div>
-        <p>{{this.last_name}}, {{this.first_name}}</p>
+        <a href="/products/{{this._id}}">{{this.title}}</a>
+        <p>{{this.description}}</p>
+        <p>Price: {{this.price}}</p>
+        <p>Category: {{this.category}}</p>
     </div>
 {{/each}}
