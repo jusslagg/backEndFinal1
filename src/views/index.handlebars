@@ -1,17 +1,17 @@
 <h1 class="text-2xl font-bold mb-4">Listado de productos por página</h1>
 
 {{#if info.hasPrevPage}}
-    <a class="btn btn-primary" href="/?page={{info.prevPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Página Anterior</a>
+    <a class="btn btn-primary" href="/?page={{info.prevPage}}&limit=5&sort={{../sort}}&query={{../query}}&type={{../type}}">Página Anterior</a>
 {{/if}}
 <p class="text-center">Página {{info.page}} de {{info.totalPages}}</p>
 {{#if info.hasNextPage}}
-    <a class="btn btn-primary" href="/?page={{info.nextPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Página Siguiente</a>
+    <a class="btn btn-primary" href="/?page={{info.nextPage}}&limit=5&sort={{../sort}}&query={{../query}}&type={{../type}}">Página Siguiente</a>
 {{/if}}
 
 <h2 class="text-xl font-semibold mt-4">Listado de {{info.totalDocs}} productos que vamos viendo de a {{info.limit}} productos por página de un total de {{info.totalPages}} páginas.</h2>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-{{#each info.docs}}
+{{#each products}}
     <div class="card bg-base-100 shadow-xl">
       <div class="card-body">
         <h2 class="card-title"><a href="/products/{{this._id}}">{{this.title}}</a></h2>
