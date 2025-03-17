@@ -1,53 +1,109 @@
-<h1>Listado de productos por página</h1>
+<h1 class="text-2xl font-bold mb-4">Listado de productos por página</h1>
 
 {{#if info.hasPrevPage}}
-    <a href="/?page={{info.prevPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Previous Page</a>
+    <a class="btn btn-primary" href="/?page={{info.prevPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Página Anterior</a>
 {{/if}}
-<p>Page {{info.page}} of {{info.totalPages}}</p>
+<p class="text-center">Página {{info.page}} de {{info.totalPages}}</p>
 {{#if info.hasNextPage}}
-    <a href="/?page={{info.nextPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Next Page</a>
+    <a class="btn btn-primary" href="/?page={{info.nextPage}}&limit={{info.limit}}&sort={{../sort}}&query={{../query}}&type={{../type}}">Página Siguiente</a>
 {{/if}}
 
-<h2>Listado de {{info.totalDocs}} productos que vamos viendo de a {{info.limit}} productos por página de un total de {{info.totalPages}} páginas.</h2>
+<h2 class="text-xl font-semibold mt-4">Listado de {{info.totalDocs}} productos que vamos viendo de a {{info.limit}} productos por página de un total de {{info.totalPages}} páginas.</h2>
 
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 {{#each info.docs}}
-    <div>
-        <a href="/products/{{this._id}}">{{this.title}}</a>
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title"><a href="/products/{{this._id}}">{{this.title}}</a></h2>
         <p>{{this.description}}</p>
-        <p>Price: {{this.price}}</p>
-        <p>Category: {{this.category}}</p>
+        <p>Precio: {{this.price}}</p>
+        <p>Categoría: {{this.category}}</p>
+      </div>
     </div>
 {{/each}}
+</div>
 
-<h2>Crear Producto</h2>
-<form action="/api/products" method="post" style="background-color:#222; padding:10px; border-radius:5px; color:#fff;">
-    <input type="text" name="title" placeholder="Título" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="text" name="description" placeholder="Descripción" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="number" name="price" placeholder="Precio" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="text" name="code" placeholder="Código" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="number" name="stock" placeholder="Stock" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="text" name="category" placeholder="Categoría" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <button type="submit" style="background-color:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:3px;">Crear Producto</button>
+<h2 class="text-xl font-semibold mt-4">Crear Producto</h2>
+<form action="/api/products" method="post" class="bg-base-200 p-4 rounded-lg">
+    <div class="form-control">
+        <label class="label">Título:</label>
+        <input type="text" name="title" placeholder="Título" required class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Descripción:</label>
+        <input type="text" name="description" placeholder="Descripción" required class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Precio:</label>
+        <input type="number" name="price" placeholder="Precio" required class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Código:</label>
+        <input type="text" name="code" placeholder="Código" required class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Stock:</label>
+        <input type="number" name="stock" placeholder="Stock" required class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Categoría:</label>
+        <input type="text" name="category" placeholder="Categoría" required class="input input-bordered w-full max-w-xs" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-4">Crear Producto</button>
 </form>
 
-<h2>Actualizar Producto</h2>
-<form action="/api/products/:pid" method="put" style="background-color:#222; padding:10px; border-radius:5px; color:#fff;">
-    <input type="text" name="pid" placeholder="ID del Producto a Actualizar" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="text" name="title" placeholder="Título" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="text" name="description" placeholder="Descripción" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="number" name="price" placeholder="Precio" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="text" name="code" placeholder="Código" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="number" name="stock" placeholder="Stock" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <input type="text" name="category" placeholder="Categoría" style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <button type="submit" style="background-color:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:3px;">Actualizar Producto</button>
+<h2 class="text-xl font-semibold mt-4">Actualizar Producto</h2>
+<form action="/api/products/:pid" method="put" class="bg-base-200 p-4 rounded-lg">
+    <div class="form-control">
+        <label class="label">Seleccione un Producto:</label>
+        <select name="pid" required class="select select-bordered w-full max-w-xs">
+            <option value="" disabled selected>Seleccione un Producto</option>
+            {{#each products}}
+                <option value="{{this._id}}">{{this.title}} (ID: {{this._id}})</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="form-control">
+        <label class="label">Título:</label>
+        <input type="text" name="title" placeholder="Título" class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Descripción:</label>
+        <input type="text" name="description" placeholder="Descripción" class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Precio:</label>
+        <input type="number" name="price" placeholder="Precio" class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Código:</label>
+        <input type="text" name="code" placeholder="Código" class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Stock:</label>
+        <input type="number" name="stock" placeholder="Stock" class="input input-bordered w-full max-w-xs" />
+    </div>
+    <div class="form-control">
+        <label class="label">Categoría:</label>
+        <input type="text" name="category" placeholder="Categoría" class="input input-bordered w-full max-w-xs" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-4">Actualizar Producto</button>
 </form>
 
-<h2>Eliminar Producto</h2>
-<form action="/api/products/:pid" method="delete" style="background-color:#222; padding:10px; border-radius:5px; color:#fff;">
-    <input type="text" name="pid" placeholder="ID del Producto a Eliminar" required style="background-color:#444; color:#fff; border:none; padding:5px; margin-bottom:5px;"><br>
-    <button type="submit" style="background-color:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:3px;">Eliminar Producto</button>
+<h2 class="text-xl font-semibold mt-4">Eliminar Producto</h2>
+<form action="/api/products/:pid" method="delete" class="bg-base-200 p-4 rounded-lg">
+    <div class="form-control">
+        <label class="label">Seleccione un Producto:</label>
+        <select name="pid" required class="select select-bordered w-full max-w-xs">
+            <option value="" disabled selected>Seleccione un Producto</option>
+            {{#each products}}
+                <option value="{{this._id}}">{{this.title}} (ID: {{this._id}})</option>
+            {{/each}}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary mt-4">Eliminar Producto</button>
 </form>
 
-<h2>Aggregar Productos</h2>
-<button onclick="fetch('/aggregateProducts')" style="background-color:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:3px;">Aggregar Productos</button>
+<h2 class="text-xl font-semibold mt-4">Aggregar Productos</h2>
+<button onclick="fetch('/aggregateProducts')" class="btn btn-primary mt-4">Aggregar Productos</button>
 <div id="aggregationResults"></div>

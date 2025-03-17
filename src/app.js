@@ -4,6 +4,7 @@ import __dirname from './utils.js';
 import viewsRouter from './routes/views.router.js';
 import productsRouter from './routes/products.router.js';
 import mongoose from 'mongoose';
+import Product from './models/product.model.js';
 
 //Inicializo la conexión a la base de datos donde tengo los usuarios
 const mongoURL = 'mongodb://localhost:27017/proyectoVideojuegos';
@@ -18,6 +19,12 @@ const app = express();
 //Configuro mi servidor para trabajar con json
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+//Middleware to log all incoming requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 
 //Inicializo mi motor de plantillas y lo configuro
 app.engine('handlebars', handlebars.engine());
@@ -55,4 +62,4 @@ app.get('/aggregateProducts', async (req, res) => {
   }
 });
 
-app.listen(8080, () => `Listening on port 8080`)
+app.listen(8080, () => console.log(`Listening on port 8080`));

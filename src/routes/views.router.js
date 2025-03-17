@@ -7,50 +7,47 @@ const router = Router();
 
 router.get('/', async (req, res) => {
 
-    const elementosPorPagina = req.query.limit ?? 10;
-    const pagActual = req.query.page ?? 1;
-    const sortBy = req.query.sort;
-    const searchQuery = req.query.query;
-    const searchType = req.query.type;
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const sort = req.query.sort;
+    const query = req.query.query;
+    const type = req.query.type;
 
     let filter = {};
-    if (searchQuery && searchType) {
-        filter[searchType] = { $regex: searchQuery, $options: 'i' };
-    } else if (searchQuery) {
+    if (query && type) {
+        filter[type] = { $regex: query, $options: 'i' };
+    } else if (query) {
          filter = {
             $or: [
-                { title: { $regex: searchQuery, $options: 'i' } },
-                { description: { $regex: searchQuery, $options: 'i' } },
-                { category: { $regex: searchQuery, $options: 'i' } }
+                { title: { $regex: query, $options: 'i' } },
+                { description: { $regex: query, $options: 'i' } },
+                { category: { $regex: query, $options: 'i' } }
             ]
         };
     }
 
     let sortOptions = {};
-    if (sortBy === 'asc') {
+    if (sort === 'asc') {
         sortOptions.price = 1;
-    } else if (sortBy === 'desc') {
+    } else if (sort === 'desc') {
         sortOptions.price = -1;
     }
 
-    let infoPaginate = await productModel.paginate(
-        filter,
-        {
-            limit: elementosPorPagina,
-            page: pagActual,
-            sort: sortOptions,
-            lean: true
-        }
-    );
+    const products = await productModel.find(filter).sort(sortOptions).lean();
 
-    console.log('Filter:', filter);
-    console.log('Sort Options:', sortOptions);
-    console.log('infoPaginate:', infoPaginate);
+    const totalDocs = products.length;
+    const totalPages = Math.ceil(totalDocs / limit);
+    const hasPrevPage = page > 1;
+    const hasNextPage = page < totalPages;
+    const prevPage = hasPrevPage ? page - 1 : null;
+    const nextPage = hasNextPage ? page + 1 : null;
 
-    const { docs, totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage } = infoPaginate;
+    const prevLink = hasPrevPage ? `/?page=${prevPage}&limit=${limit}&sort=${sort}&query=${query}&type=${type}` : null;
+    const nextLink = hasNextPage ? `/?page=${nextPage}&limit=${limit}&sort=${sort}&query=${query}&type=${type}` : null;
 
-    const prevLink = hasPrevPage ? `/products?limit=${elementosPorPagina}&page=${prevPage}&sort=${sortBy}&query=${searchQuery}&type=${searchType}` : null;
-    const nextLink = hasNextPage ? `/products?limit=${elementosPorPagina}&page=${nextPage}&sort=${sortBy}&query=${searchQuery}&type=${searchType}` : null;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const docs = products.slice(startIndex, endIndex);
 
     const response = {
         status: "success",
@@ -64,8 +61,8 @@ router.get('/', async (req, res) => {
         prevLink: prevLink,
         nextLink: nextLink
     };
-    console.log('Product data:', response);
-    res.render('index', { info: response });
+
+    res.render('index', { info: response, products: docs, sort, query, type });
 })
 
 router.get('/carts/:cid', async (req, res) => {
