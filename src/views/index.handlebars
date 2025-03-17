@@ -53,7 +53,7 @@
 </form>
 
 <h2 class="text-xl font-semibold mt-4">Actualizar Producto</h2>
-<form action="/api/products/:pid" method="put" class="bg-base-200 p-4 rounded-lg">
+<form id="updateProductForm" action="/api/products/:pid" method="put" class="bg-base-200 p-4 rounded-lg">
     <div class="form-control">
         <label class="label">Seleccione un Producto:</label>
         <select name="pid" required class="select select-bordered w-full max-w-xs">
@@ -107,3 +107,37 @@
 <h2 class="text-xl font-semibold mt-4">Aggregar Productos</h2>
 <button onclick="fetch('/aggregateProducts')" class="btn btn-primary mt-4">Aggregar Productos</button>
 <div id="aggregationResults"></div>
+
+<script>
+  const updateProductForm = document.getElementById('updateProductForm');
+  const productSelect = updateProductForm.querySelector('select[name="pid"]');
+
+  productSelect.addEventListener('change', () => {
+    const selectedProductId = productSelect.value;
+    updateProductForm.action = `/api/products/${selectedProductId}`;
+  });
+
+  updateProductForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    const formData = new FormData(updateProductForm);
+    const productId = productSelect.value;
+
+    try {
+      const response = await fetch(`/api/products/${productId}`, {
+        method: 'PUT',
+        body: new URLSearchParams(formData),
+      });
+
+      if (response.ok) {
+        // Handle success (e.g., display a success message)
+        console.log('Product updated successfully!');
+      } else {
+        // Handle error (e.g., display an error message)
+        console.error('Failed to update product:', response.status);
+      }
+    } catch (error) {
+      console.error('Error updating product:', error);
+    }
+  });
+</script>
