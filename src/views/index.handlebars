@@ -18,6 +18,7 @@
         <p>{{this.description}}</p>
         <p>Precio: {{this.price}}</p>
         <p>Categoría: {{this.category}}</p>
+        </script>
       </div>
     </div>
 {{/each}}
@@ -91,7 +92,7 @@
 </form>
 
 <h2 class="text-xl font-semibold mt-4">Eliminar Producto</h2>
-<form action="/api/products/:pid" method="delete" class="bg-base-200 p-4 rounded-lg">
+<form id="deleteProductForm" action="/api/products/:pid" method="delete" class="bg-base-200 p-4 rounded-lg">
     <div class="form-control">
         <label class="label">Seleccione un Producto:</label>
         <select name="pid" required class="select select-bordered w-full max-w-xs">
@@ -122,11 +123,18 @@
 
     const formData = new FormData(updateProductForm);
     const productId = productSelect.value;
+    const formDataObject = {};
+    formData.forEach((value, key) => {
+      formDataObject[key] = value;
+    });
 
     try {
       const response = await fetch(`/api/products/${productId}`, {
         method: 'PUT',
-        body: new URLSearchParams(formData),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formDataObject),
       });
 
       if (response.ok) {
@@ -140,4 +148,29 @@
       console.error('Error updating product:', error);
     }
   });
+
+  const deleteProductForm = document.getElementById('deleteProductForm');
+
+  deleteProductForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    const deleteProductSelect = deleteProductForm.querySelector('select[name="pid"]');
+    const productId = deleteProductSelect.value;
+
+    try {
+      const response = await fetch(`/api/products/${productId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Handle success (e.g., display a success message)
+        console.log('Product deleted successfully!');
+      } else {
+        // Handle error (e.g., display an error message)
+        console.error('Failed to delete product:', response.status);
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  });
+  const deleteProductSelect = deleteProductForm.querySelector('select[name="pid"]');
 </script>
