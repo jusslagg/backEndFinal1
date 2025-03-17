@@ -6,27 +6,22 @@ import productsRouter from './routes/products.router.js';
 import mongoose from 'mongoose';
 import Product from './models/product.model.js';
 
-//Inicializo la conexión a la base de datos donde tengo los usuarios
 const mongoURL = 'mongodb://localhost:27017/proyectoVideojuegos';
 const environment = async () => {
     await mongoose.connect(mongoURL);
 }
 environment();
 
-//Inicializo la constante app para utilizar expres
 const app = express();
 
-//Configuro mi servidor para trabajar con json
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-//Middleware to log all incoming requests
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
 });
 
-//Inicializo mi motor de plantillas y lo configuro
 app.engine('handlebars', handlebars.engine());
 app.set('views',  __dirname + '/views');
 app.set('view engine', 'handlebars');

@@ -1,4 +1,3 @@
-/** Voy a crear puntos de acceso que renderizan plantillas */
 import {Router} from 'express';
 import productModel from '../models/product.model.js';
 import Cart from '../models/carts.model.js';
